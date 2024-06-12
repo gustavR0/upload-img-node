@@ -49,9 +49,22 @@
     inputDiv = document.querySelector('.input-div'),
     input = document.querySelector('.input-div input'),
     serverMessage = document.querySelector('.server-message'),
+    savedImages = JSON.parse('<%-JSON.stringify(images)%>'),
     deleteImages = [];
 
     // SAVED IMAGES
+    if (savedImages) displaySavedImages()
+
+    function displaySavedImages () {
+      let images = "";
+      savedImages.forEach((image, index) => {
+        images += `<div class="image">
+                    <img src="http://localhost:3000/uploads/${image}" alt="image">
+                    <span onclick="deleteSavedImage(${index})">&times;</span>
+                  </div>`;
+      })
+      queuedDiv.innerHTML = images;
+    }
 
     // QUEUED IMAGES
     function displayQueuedImages() {
