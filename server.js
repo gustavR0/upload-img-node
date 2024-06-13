@@ -79,6 +79,21 @@ app.post('/upload', (req, res) => {
   })
 })
 
+app.put('/delete', (req, res) => {
+  const deleteImages = req.body.deleteImages
+  // eslint-disable-next-line eqeqeq
+  if (deleteImages == '') {
+    res.statusMessage = 'Please select an image to delete'
+    res.status(400).end()
+  } else {
+    deleteImages.forEach(img => {
+      unlinkFile('./public/uploads/' + img)
+    })
+    res.statusMessage = 'Succesfully deleted'
+    res.status(200).end()
+  }
+})
+
 app.listen(port, () => {
   console.log(`Server started on port ${port}`)
 })

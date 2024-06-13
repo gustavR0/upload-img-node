@@ -63,7 +63,38 @@
                     <span onclick="deleteSavedImage(${index})">&times;</span>
                   </div>`;
       })
-      queuedDiv.innerHTML = images;
+      savedDiv.innerHTML = images;
+    }
+
+    function deleteSavedImage(index) {
+      deleteImages.push(savedImages[index])
+      savedImages.splice(index, 1)
+      displaySavedImages()
+    }
+
+    savedForm.addEventListener("submit", (e) => {
+      e.preventDefault()
+      deleteImagesFromServer()
+    })
+    function deleteImagesFromServer(params) {
+      fetch("delete",{
+        method: "PUT",
+        headers: {
+          "Accept": "application/json, text/plain, */*",
+          "Content-type": "application/json"
+        },
+        body: JSON.stringify({deleteImages})
+      })
+      .then(resp => {
+        if (resp.status !== 200) throw Error(resp.statusText)
+        deleteImages = []
+        serverMessage.innerHTML = resp.statusText
+        serverMessage.style.cssText = "background-color: #d4edda; color: #1b5e20"
+      })
+      .catch( error => { 
+        serverMessage.innerHTML = error
+        serverMessage.style.cssText = "background-color: #f8d7da; color:#b71c1c"
+      });
     }
 
     // QUEUED IMAGES
